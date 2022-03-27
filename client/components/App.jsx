@@ -1,14 +1,15 @@
 import React from 'react'
-import Coordinates from './Coordinates'
 import GameBoard from './GameBoard'
+import HowToButton from './HowTo'
 
 function App () {  
   return (
     <>
-    <div>
-      <center><h1>Battleship Game</h1></center>
-    </div>
-      <GameBoard />
+      <center>
+        <h1>Battleship Game</h1>
+        <HowToButton /><br /><br />
+        <GameBoard />
+      </center>
     </>
   )
 }
