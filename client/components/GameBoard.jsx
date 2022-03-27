@@ -82,8 +82,29 @@ function GameBoard () {
     const [battleship1, setBattleship1] = useState()
     const [battleship2, setBattleship2] = useState()
 
-    // Hide the images at the start of the game
-    const [isHidden, setIsHidden] = useState(false)
+    // Hide the images at the start of the game, and show at the end
+    const [isHidden, setIsHidden] = useState(true)
+
+    // Check win for the Game
+    const [isWin, setIsWin] = useState(false)
+
+     // Create ternary to check wins and show/hide tiles
+    {isWin ? setIsHidden(true) : null}
+
+     // checking for win
+     const checkWin = 0
+
+     // conditions for win
+     if (x === battleship1[0] || battleship2[0] && y === battleship1[1] || battleship2[1]) {
+        // change to only show tile of the found battleship
+        setIsHidden(false)
+        return checkWin++
+     }
+
+     if (checkWin === 2) {
+         setIsHidden(false)
+         alert("You won!")
+     }
 
     useEffect(() => {
         // access data to get links to the images
@@ -104,21 +125,11 @@ function GameBoard () {
         // Get index of Battleships
         const battleship1Index = randomised.indexOf('./images/Battleship1.png')
         const battleship2Index = randomised.indexOf('./images/Battleship2.png')
-
-        console.log(battleship1Index)
-
-        // Access layout data with X and Y key value pairs
-        // const coordinateX = layout.map(item => item.x)
-        // const coordinateY = layout.map(item => item.y)
       
         // Get object values x and y in the array with the 
         // matching index to battleship1 and battleship2
         setBattleship1(Object.values(layout[battleship1Index]))
         setBattleship2(Object.values(layout[battleship2Index]))
-
-        // print values to check logic
-        const b1 = Object.values(layout[battleship1Index])
-        console.log(b1)
     
         // assign to each state
         setImage1(randomised[0])
@@ -188,27 +199,22 @@ function GameBoard () {
       }, [])
 
 
-  
+    // Handle submit button, compare input with current coordinate locations
     const handleSubmit = (e) => {
         e.preventDefault()
-        const distance = Math.abs(x-battleship1[0]) + Math.abs(y-battleship1[1])
-        console.log(distance)
-        if (distance === 1) {
-            return alert("you're in the HOT zone")
-        } else if (distance === 2) {
-            return alert("you're in the HOT zone")
-        } else if (distance === 3) {
-            return alert("you're in the WARM zone")
-        } else if (distance === 4) {
-            return alert("you're in the WARM zone")
+
+        const distanceBattleship1 = Math.abs(x-battleship1[0]) + Math.abs(y-battleship1[1])
+        const distanceBattleship2 = Math.abs(x-battleship1[1]) + Math.abs(y-battleship1[2])
+
+        // Create conditions to show hints based on guessed coordinates
+        if (distanceBattleship1 || distanceBattleship2 === 1 || 2) {
+            return alert("You're in the HOT zone")
+        } else if (distanceBattleship1 || distanceBattleship2 === 3 || 4) {
+            return alert("You're in the WARM zone")
         } else {
            return alert("You're far away in the COLD")
         }
       }
-
-     
-
-    
 
     return (
         <>
@@ -217,6 +223,8 @@ function GameBoard () {
                 <Col>
                      <Table bordered responsive="sm">
                         <tbody>
+                            {/* Create Ternary to hide all images at the beggining of the game, 
+                            and show after the game */}
                             {/* <tr>
                                 <td id="00"><img src={isHidden ? image1 : './images/navigate.png'} /></td>
                                 <td id="01"><img src={isHidden ? image2 : './images/navigate.png'} /></td>
@@ -317,13 +325,13 @@ function GameBoard () {
             <center>
             <Form onSubmit={handleSubmit}>
                 <Row className="justify-content-md-center">
-                    <Col xs lg="2">
+                    <Col xs lg="4">
                         <Form.Group className="mb-3" controlId="coordinateX">
                             <Form.Label>Row</Form.Label>
                             <Form.Control type="number" placeholder="Input X Coordinate" onChange={e => setX(e.target.value)}/>
                         </Form.Group>
                     </Col>
-                    <Col xs lg="2">
+                    <Col xs lg="4">
                         <Form.Group className="mb-3" controlId="coordinateY">
                             <Form.Label>Column</Form.Label>
                             <Form.Control type="number" placeholder="Input Y Coordinate" onChange={e => setY(e.target.value)}/>
@@ -331,7 +339,7 @@ function GameBoard () {
                     </Col>
                 </Row>
                 <Row className="justify-content-md-center">
-                    <Col xs lg="2">
+                    <Col xs ="2">
                         <Button className="mb-3" variant="primary" type="submit">
                             Submit
                         </Button>
