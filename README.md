@@ -1,6 +1,6 @@
-# React boilerplate
+# Battleship Game
 
-Contains the essence of a react component
+Using React and JavaScipt
 
 ## Getting started
 
@@ -8,3 +8,5 @@ Contains the essence of a react component
 npm i
 npm run dev
 ```
+
+Go to http://localhost:3000/ to play the Game
